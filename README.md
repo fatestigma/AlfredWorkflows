@@ -15,4 +15,4 @@ Make watching tv shows more easier.
 [AlfredWorkflow.com]: http://www.alfredworkflow.com
 [powerpack]: http://www.alfredapp.com/powerpack/
 
-[show-show]:
+[show-show]: https://github.com/fatestigma/AlfredWorkflows/blob/master/extra/show.png
