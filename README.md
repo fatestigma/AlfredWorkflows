@@ -1,18 +1,20 @@
-AlfredWorkflows
-===============
-Make your Alfred more powerful.  **([Alfred 2]  [powerpack] required)**
-For more workflows, check [AlfredWorkflow.com] and [Support]
+# AlfredWorkflows
 
-show
-----
+Make your Alfred more powerful.  **([Alfred 2] powerpack required)**
+
+For more workflows, check [AlfredWorkflow.com] and [Workflow Support]
+
+* * *
+
+## show
+
 Make watching tv shows more easier.
-![show-show]
 
+![image](https://github.com/fatestigma/AlfredWorkflows/raw/master/extra/show.png)<br>
+`This means I have watched Episode 4 of Game of Thrones`
 
 
 [Alfred 2]: http://www.alfredapp.com/
-[Support]: http://support.alfredapp.com/workflows
+[Workflow Support]: http://support.alfredapp.com/workflows
 [AlfredWorkflow.com]: http://www.alfredworkflow.com
-[powerpack]: http://www.alfredapp.com/powerpack/
 
-[show-show]: https://github.com/fatestigma/AlfredWorkflows/blob/master/extra/show.png
