@@ -19,11 +19,33 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>8D562804-FB9B-4643-94B7-8848A9BD670A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>1440AD24-5B17-4362-A23D-241D524BB025</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>988E6332-E204-4351-9E7A-E6C72287146D</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>1440AD24-5B17-4362-A23D-241D524BB025</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A5A6F476-61A0-45A5-BCCE-4DCEDA8A5B02</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8D562804-FB9B-4643-94B7-8848A9BD670A</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -45,13 +67,15 @@
 			<key>config</key>
 			<dict>
 				<key>escaping</key>
-				<integer>126</integer>
+				<integer>124</integer>
 				<key>script</key>
 				<string>require_once('show.php');
 
-$tvshow = \CFPropertyList\WatchShow::factory('{query}');
-$ep = $tvshow-&gt;watched();
-echo $ep;</string>
+$tvshow = \CFPropertyList\WatchShow::factory("{query}");
+if ("{query}"=="undo")
+	echo $tvshow-&gt;undo();
+else
+	echo $tvshow-&gt;watched();</string>
 				<key>type</key>
 				<integer>1</integer>
 			</dict>
@@ -59,6 +83,41 @@ echo $ep;</string>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>988E6332-E204-4351-9E7A-E6C72287146D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>watch</string>
+				<key>runningsubtext</key>
+				<string>Please waiting...</string>
+				<key>script</key>
+				<string>require_once('show.php');
+
+$tvshow = \CFPropertyList\WatchShow::factory("{query}");
+if ("{query}"=="all")
+	echo $tvshow-&gt;listInAlfred(true);
+else
+	echo $tvshow-&gt;listInAlfred();</string>
+				<key>subtext</key>
+				<string>check how many Episodes of '{query}' I have seen</string>
+				<key>title</key>
+				<string>TV show</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -93,18 +152,16 @@ echo $ep;</string>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>126</integer>
+				<integer>0</integer>
 				<key>keyword</key>
-				<string>show</string>
+				<string>finish</string>
 				<key>runningsubtext</key>
 				<string>Please waiting...</string>
 				<key>script</key>
 				<string>require_once('show.php');
 
-$tvshow = \CFPropertyList\WatchShow::factory('{query}');
+$tvshow = \CFPropertyList\WatchShow::factory("{query}");
 echo $tvshow-&gt;listInAlfred();</string>
-				<key>subtext</key>
-				<string>check how many Episodes of '{query}' I have seen</string>
 				<key>title</key>
 				<string>TV show</string>
 				<key>type</key>
@@ -115,32 +172,118 @@ echo $tvshow-&gt;listInAlfred();</string>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</string>
+			<string>A5A6F476-61A0-45A5-BCCE-4DCEDA8A5B02</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>require_once('show.php');
+
+$tvshow = \CFPropertyList\WatchShow::factory("{query}");
+$ep = $tvshow-&gt;finished();
+echo $ep;</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8D562804-FB9B-4643-94B7-8848A9BD670A</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>#TV Show Helper
+Alfred Workflow to help you to remember which episde have you watched!  
+一个帮助你记住你的电视剧们都看到哪里了的Alfred Workflow
+
+__Version: beta 0.3__
+
+##Getting Started
+Use Keyword `watch` to activate this workflow with parameter whether complete or incomplete name of the show.  
+使用关键词 `watch` 来激活这个workflow，并后缀上电视剧名
+
+Use `&lt;Enter&gt;` Key to confirm, which means you have watched another episode of it  
+回车已确认，来表示你又看了一集
+
+then you will get a feedback at notification bar  
+确认之后你会在通知中心获得一个反馈
+
+if the show wasn`t in the local plist, input the complete name of it and press `&lt;Enter&gt;` key to add it in the plist file  
+如果你看的片并不在本地属性文件中，请在参数处输入完整的剧名并按回车键确认添加此剧
+
+##What's New
+####0.3
+_28th Jun, 2014_
+
+- __Init Plist File__  
+	Automate to init plist file when you first use it.  
+	在第一次使用时自动初始化一个plist文件
+		
+- __Undo Support__  
+	Now you can use "watch undo" to undo your last change, and use "watch all" to display all the show in your plist file.  
+	使用"watch undo"可以撤销上一次指令的效果，并可以使用"watch all"来显示所有剧名。
+	
+- __Init Episode Support__ 
+	"watch init {eps} {name}" to init directly.
+
+####0.2
+_2nd May, 2014_
+
+- __Single Quoto Support__  
+	Use double quoto "{query}" to deal with the parse error like `'Grey's Anatomy'`  
+
+####0.1
+_1st May, 2014_  
+
+- __Chinese Support__  
+	now you can use pinyin of Chinese Character to search  
+	你可以使用中文和中文拼音来查找一个中文剧名的电视剧了  
+- __New Icon__  
+	use brand new icon instead of Google TV logo  
+	使用全新的图标，而不再是Google TV的图标了
+	
+##Contact Me
+E-mail: fate_stigma@hotmail.com  
+Website: fatestigma.github.io
+
+##TODO
+- Put plist file in Application Supports</string>
 	<key>uidata</key>
 	<dict>
 		<key>1440AD24-5B17-4362-A23D-241D524BB025</key>
 		<dict>
 			<key>ypos</key>
-			<real>100</real>
+			<real>170</real>
 		</dict>
 		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
 		<dict>
 			<key>ypos</key>
 			<real>100</real>
 		</dict>
+		<key>8D562804-FB9B-4643-94B7-8848A9BD670A</key>
+		<dict>
+			<key>ypos</key>
+			<real>220</real>
+		</dict>
 		<key>988E6332-E204-4351-9E7A-E6C72287146D</key>
 		<dict>
 			<key>ypos</key>
 			<real>100</real>
 		</dict>
+		<key>A5A6F476-61A0-45A5-BCCE-4DCEDA8A5B02</key>
+		<dict>
+			<key>ypos</key>
+			<real>220</real>
+		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string></string>
+	<string>fatestigma.github.io</string>
 </dict>
 </plist>

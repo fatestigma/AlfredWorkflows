@@ -8,6 +8,7 @@ namespace CFPropertyList;
 
 require_once('workflows.php');
 require_once(__DIR__.'/CFPropertyList/CFPropertyList.php');
+require_once('pinyin.php');
 
 class WatchShow {
 	private $_query = null;
@@ -20,49 +21,117 @@ class WatchShow {
 	
 	public function __construct($q) {
 		$this->_workflow = new \Workflows();
-
 		$this->_query = $q;
-
-		$content = file_get_contents('tvlist.plist');
-		$this->_data = new CFPropertyList();
-		$this->_data->parseBinary($content);
+		if (file_exists(__DIR__.'/tvlist.plist'))
+			$this->_data = new CFPropertyList('tvlist.plist');
+		else {
+			$plist = new CFPropertyList();
+			$plist->add( $dict = new CFDictionary() );
+			$plist->add( $dict2 = new CFDictionary() );
+			$dict2->add( 'blank', new CFNumber(0) );
+			$plist->saveBinary(__DIR__.'/tvlist.plist');
+		}
 	}
 
 	//watch a watched tv show
 	public function watched() {
-		$ep = 1;
-		$found = false;
+		$content = $this->_data->getValue(true)->get(0)->getValue();
+		$key = $this->_query;
+		$ep = -1;
 		//find it and update its episodes
-		foreach ($this->_data->getValue(true) as $key => $value) {
-			if ( $key == $this->_query) {
-				$ep = $value->getValue() + 1;
-				$value->setValue($ep);
-				$found = true;
-				break;
+		if (substr($key, 0, 4)=="init") {
+			$array = split(" ", $key, 3);
+			$ep = (int)$array[1];
+			$key = $array[2];
+		}
+		if (array_key_exists($key, $content)) {
+			$value = $content[$key];
+			$this->saveHistory($key, $value);
+			if ($ep == -1) {
+				$ep = $value->getValue()+1;
+			}
+			$value->setValue($ep);		
+		} else {
+			$dict = $this->_data->getValue(true)->get(0);
+			if ($ep == -1) {
+				$dict->add($key, new CFNumber(1));
+			} else {
+				$dict->add($key, new CFNumber($ep));
 			}
 		}
-		//not exist then add it in your plist
-		if ($found == false) {
-			$dict = $this->_data->getValue(true);
-			$dict->add($this->_query, new CFNumber(1));
-		}
-		
 		$this->_data->save('tvlist.plist', CFPropertyList::FORMAT_BINARY );
-		$str = $this->_query . ' Episode ' . $ep . ' is watched!';
+		$str = $key . ' Episode ' . $ep . ' is watched!';
+		return $str;
+	}
+	
+	public function finished() {
+		$dict = $this->_data->getValue(true)->get(0);
+		$content = $dict->getValue();
+		$key = $this->_query;
+		
+		if (array_key_exists($key, $content)) {
+			$this->saveHistory($key, $content[$key]);
+			$dict->del($key);
+			$str = 'This season of ' . $this->_query . ' is finished.';
+			$this->_data->save('tvlist.plist', CFPropertyList::FORMAT_BINARY );
+		} else {
+			$str = $this->_query . ' is not in your plist or already deleted!';
+		}
 		return $str;
 	}
 
-	//show in alfred
-	public function listInAlfred() {
-		$response = $this->_data;
+	public function undo() {
+		$dict = $this->_data->getValue(true)->get(0);
+		$content = $dict->getValue();
+		foreach ($this->_data->getValue(true)->get(1)->getValue() as $key => $episode) {
+			$ep = $episode->getValue();
+			if (array_key_exists($key, $content)) {
+				$value = $content[$key];
+				$value->setValue($ep);		
+			} else {	//not exist then add it in your plist
+				$dict->add($key, new CFNumber($ep));
+			}
+			$this->_data->save('tvlist.plist', CFPropertyList::FORMAT_BINARY );
+			return 'Undo ' . $key . ' with epidode ' . $ep . ' successfully!';
+		}
+	}
+	
+	//show in alfred show all if displayAll
+	public function listInAlfred($displayAll=false) {
+		$response = $this->_data->getValue(true)->get(0);
 		$query = $this->_query;
 		$int = 1;
-		foreach ($response->getValue(true) as $key => $value) {
-			if (stripos($key, $query) !== false) {
+		$prefix = "";
+		
+		if ($query=="undo"){	// undo last change
+			$this->_workflow->result($int.'.'.time(), "undo", "undo", "undo last watch", 'icon.png');
+			$int++;
+		}
+		
+		if (substr($query, 0, 4)=="init") {
+			$array = split(" ", $query,3);
+			$eps = $array[1];
+			$query = $array[2];
+			$prefix = "init ".$eps." ";
+		}
+		
+		foreach ($response->getValue() as $key => $value) {
+			if ($displayAll) {	// display all
 				$ep = $value->getValue();
 				$this->_workflow->result($int.'.'.time(), "$key", "$key", "$ep", 'icon.png');
 				$int++;
+				continue;
 			}
+			
+			$name = $key;
+			if ($this->check_str($key)!=1)
+				$key = \Pinyin($key,1);
+			if (stripos($key, $query) !== false || stripos($name, $query) !== false) {
+				$ep = $value->getValue();
+				$this->_workflow->result($int.'.'.time(),$prefix . $name, $name, "$ep", 'icon.png');
+				$int++;
+			}
+			
 		}
 		
 		$results = $this->_workflow->results();
@@ -71,5 +140,29 @@ class WatchShow {
 
 		return $this->_workflow->toxml();
 	}
+	
+	private function check_str($str=''){
+		if(trim($str)==''){
+			return '';
+		}
+		$m=mb_strlen($str,'utf-8');
+		$s=strlen($str);
+		if($s==$m){
+			return 1;
+		}
+		if($s%$m==0&&$s%3==0){
+			return 2;
+		}
+		return 3;
+	}
+	
+	private function saveHistory($varkey, $varvalue) {
+		$content = $this->_data->getValue(true)->get(1);
+		foreach ($content->getValue() as $key => $value) {
+			$content->del($key);
+		}
+		$content->add($varkey, new CFNumber($varvalue->getValue()));
+	}
+	
 }
 ?>
