@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.jx.shows.workflow</string>
+	<string>com.jx.shows.alfred</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -13,6 +13,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>988E6332-E204-4351-9E7A-E6C72287146D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>7DEF9F97-6709-41B2-BEF5-4527B261E284</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -35,6 +46,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>1440AD24-5B17-4362-A23D-241D524BB025</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>A01EBC44-0469-4181-B435-66D11559F030</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A5A6F476-61A0-45A5-BCCE-4DCEDA8A5B02</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -66,25 +88,29 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>escaping</key>
-				<integer>124</integer>
-				<key>script</key>
-				<string>require_once('show.php');
-
-$tvshow = \CFPropertyList\WatchShow::factory("{query}");
-if ("{query}"=="undo")
-	echo $tvshow-&gt;undo();
-else
-	echo $tvshow-&gt;watched();</string>
-				<key>type</key>
-				<integer>1</integer>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>hotstring</key>
+				<string></string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
-			<string>988E6332-E204-4351-9E7A-E6C72287146D</string>
+			<string>7DEF9F97-6709-41B2-BEF5-4527B261E284</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -124,6 +150,29 @@ else
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>escaping</key>
+				<integer>124</integer>
+				<key>script</key>
+				<string>require_once('show.php');
+
+$tvshow = \CFPropertyList\WatchShow::factory("{query}");
+if ("{query}"=="undo")
+	echo $tvshow-&gt;undo();
+else
+	echo $tvshow-&gt;watched();</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>988E6332-E204-4351-9E7A-E6C72287146D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>lastpathcomponent</key>
 				<false/>
 				<key>onlyshowifquerypopulated</key>
@@ -143,6 +192,27 @@ else
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>1440AD24-5B17-4362-A23D-241D524BB025</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>require_once('show.php');
+
+$tvshow = \CFPropertyList\WatchShow::factory("{query}");
+$ep = $tvshow-&gt;finished();
+echo $ep;</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8D562804-FB9B-4643-94B7-8848A9BD670A</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -179,23 +249,29 @@ echo $tvshow-&gt;listInAlfred();</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>escaping</key>
+				<key>action</key>
 				<integer>0</integer>
-				<key>script</key>
-				<string>require_once('show.php');
-
-$tvshow = \CFPropertyList\WatchShow::factory("{query}");
-$ep = $tvshow-&gt;finished();
-echo $ep;</string>
-				<key>type</key>
-				<integer>1</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>hotstring</key>
+				<string></string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
-			<string>8D562804-FB9B-4643-94B7-8848A9BD670A</string>
+			<string>A01EBC44-0469-4181-B435-66D11559F030</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -203,7 +279,7 @@ echo $ep;</string>
 Alfred Workflow to help you to remember which episde have you watched!  
 一个帮助你记住你的电视剧们都看到哪里了的Alfred Workflow
 
-__Version: beta 0.3__
+__Version: beta 0.4__
 
 ##Getting Started
 Use Keyword `watch` to activate this workflow with parameter whether complete or incomplete name of the show.  
@@ -219,8 +295,18 @@ if the show wasn`t in the local plist, input the complete name of it and press `
 如果你看的片并不在本地属性文件中，请在参数处输入完整的剧名并按回车键确认添加此剧
 
 ##What's New
+####0.4
+_Jul 5th, 2014_
+
+- __Change Plist Path__  
+	Put plist file in Application Supports
+
+- __Hotkey added__ 
+
+- __few bug fixed__ 
+
 ####0.3
-_28th Jun, 2014_
+_Jun 28th, 2014_
 
 - __Init Plist File__  
 	Automate to init plist file when you first use it.  
@@ -234,13 +320,13 @@ _28th Jun, 2014_
 	"watch init {eps} {name}" to init directly.
 
 ####0.2
-_2nd May, 2014_
+_May 2nd, 2014_
 
 - __Single Quoto Support__  
 	Use double quoto "{query}" to deal with the parse error like `'Grey's Anatomy'`  
 
 ####0.1
-_1st May, 2014_  
+_May 1st, 2014_  
 
 - __Chinese Support__  
 	now you can use pinyin of Chinese Character to search  
@@ -251,10 +337,7 @@ _1st May, 2014_
 	
 ##Contact Me
 E-mail: fate_stigma@hotmail.com  
-Website: fatestigma.github.io
-
-##TODO
-- Put plist file in Application Supports</string>
+Website: fatestigma.github.io</string>
 	<key>uidata</key>
 	<dict>
 		<key>1440AD24-5B17-4362-A23D-241D524BB025</key>
@@ -263,6 +346,11 @@ Website: fatestigma.github.io
 			<real>170</real>
 		</dict>
 		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
+		<dict>
+			<key>ypos</key>
+			<real>100</real>
+		</dict>
+		<key>7DEF9F97-6709-41B2-BEF5-4527B261E284</key>
 		<dict>
 			<key>ypos</key>
 			<real>100</real>
@@ -276,6 +364,11 @@ Website: fatestigma.github.io
 		<dict>
 			<key>ypos</key>
 			<real>100</real>
+		</dict>
+		<key>A01EBC44-0469-4181-B435-66D11559F030</key>
+		<dict>
+			<key>ypos</key>
+			<real>220</real>
 		</dict>
 		<key>A5A6F476-61A0-45A5-BCCE-4DCEDA8A5B02</key>
 		<dict>

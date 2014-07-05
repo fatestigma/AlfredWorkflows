@@ -2,7 +2,7 @@
 Alfred Workflow to help you to remember which episde have you watched!  
 一个帮助你记住你的电视剧们都看到哪里了的Alfred Workflow
 
-__Version: beta 0.3__
+__Version: beta 0.4__
 
 ##Getting Started
 Use Keyword `watch` to activate this workflow with parameter whether complete or incomplete name of the show.  
@@ -18,8 +18,18 @@ if the show wasn`t in the local plist, input the complete name of it and press `
 如果你看的片并不在本地属性文件中，请在参数处输入完整的剧名并按回车键确认添加此剧
 
 ##What's New
+####0.4
+_Jul 5th, 2014_
+
+- __Change Plist Path__  
+	Put plist file in Application Supports
+
+- __Hotkey added__ 
+
+- __few bug fixed__ 
+
 ####0.3
-_28th Jun, 2014_
+_Jun 28th, 2014_
 
 - __Init Plist File__  
 	Automate to init plist file when you first use it.  
@@ -33,13 +43,13 @@ _28th Jun, 2014_
 	"watch init {eps} {name}" to init directly.
 
 ####0.2
-_2nd May, 2014_
+_May 2nd, 2014_
 
 - __Single Quoto Support__  
 	Use double quoto "{query}" to deal with the parse error like `'Grey's Anatomy'`  
 
 ####0.1
-_1st May, 2014_  
+_May 1st, 2014_  
 
 - __Chinese Support__  
 	now you can use pinyin of Chinese Character to search  
@@ -51,6 +61,3 @@ _1st May, 2014_
 ##Contact Me
 E-mail: fate_stigma@hotmail.com  
 Website: fatestigma.github.io
-
-##TODO
-- Put plist file in Application Supports

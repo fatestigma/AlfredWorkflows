@@ -7,13 +7,14 @@
 namespace CFPropertyList;
 
 require_once('workflows.php');
-require_once(__DIR__.'/CFPropertyList/CFPropertyList.php');
-require_once('pinyin.php');
+require_once(__DIR__.'/source/CFPropertyList/CFPropertyList.php');
+require_once(__DIR__.'/source/pinyin.php');
 
 class WatchShow {
 	private $_query = null;
 	private $_workflow = null;
 	private $_data = null;
+	private $_path = null;
 	
 	public static function factory($q) {
 		return new WatchShow($q);
@@ -22,15 +23,21 @@ class WatchShow {
 	public function __construct($q) {
 		$this->_workflow = new \Workflows();
 		$this->_query = $q;
-		if (file_exists(__DIR__.'/tvlist.plist'))
-			$this->_data = new CFPropertyList('tvlist.plist');
-		else {
-			$plist = new CFPropertyList();
-			$plist->add( $dict = new CFDictionary() );
-			$plist->add( $dict2 = new CFDictionary() );
-			$dict2->add( 'blank', new CFNumber(0) );
-			$plist->saveBinary(__DIR__.'/tvlist.plist');
+		$this->_path = $this->_workflow->data() . '/tvlist.plist';
+		if (!file_exists($this->_path)) {
+			if (file_exists(__DIR__.'/tvlist.plist')){
+				$plist = new CFPropertyList(__DIR__.'/tvlist.plist');
+				unlink(__DIR__.'/tvlist.plist');
+			}
+			else {
+				$plist = new CFPropertyList();
+				$plist->add( $dict = new CFDictionary() );
+				$plist->add( $dict2 = new CFDictionary() );
+				$dict2->add( 'blank', new CFNumber(0) );
+			}
+			$plist->saveBinary($this->_path);
 		}
+		$this->_data = new CFPropertyList($this->_path);
 	}
 
 	//watch a watched tv show
@@ -53,13 +60,11 @@ class WatchShow {
 			$value->setValue($ep);		
 		} else {
 			$dict = $this->_data->getValue(true)->get(0);
-			if ($ep == -1) {
-				$dict->add($key, new CFNumber(1));
-			} else {
-				$dict->add($key, new CFNumber($ep));
-			}
+			if ($ep == -1)
+				$ep = 1;
+			$dict->add($key, new CFNumber($ep));
 		}
-		$this->_data->save('tvlist.plist', CFPropertyList::FORMAT_BINARY );
+		$this->_data->save($this->_path, CFPropertyList::FORMAT_BINARY );
 		$str = $key . ' Episode ' . $ep . ' is watched!';
 		return $str;
 	}
@@ -73,7 +78,7 @@ class WatchShow {
 			$this->saveHistory($key, $content[$key]);
 			$dict->del($key);
 			$str = 'This season of ' . $this->_query . ' is finished.';
-			$this->_data->save('tvlist.plist', CFPropertyList::FORMAT_BINARY );
+			$this->_data->save($this->_path, CFPropertyList::FORMAT_BINARY );
 		} else {
 			$str = $this->_query . ' is not in your plist or already deleted!';
 		}
@@ -91,7 +96,7 @@ class WatchShow {
 			} else {	//not exist then add it in your plist
 				$dict->add($key, new CFNumber($ep));
 			}
-			$this->_data->save('tvlist.plist', CFPropertyList::FORMAT_BINARY );
+			$this->_data->save($this->_path, CFPropertyList::FORMAT_BINARY );
 			return 'Undo ' . $key . ' with epidode ' . $ep . ' successfully!';
 		}
 	}
@@ -137,6 +142,8 @@ class WatchShow {
 		$results = $this->_workflow->results();
 		if (count($results) == 0)
 			$this->_workflow->result('show', $this->_query, 'Cannot find this show in my property list', 'Press \'Enter\' key to add it in your plist file.', 'icon.png' );
+		else
+			$this->_workflow->result(0, $this->_query, $this->_query . ' is not in the list', 'Press \'Enter\' key to add it in your plist file.', 'icon.png' );
 
 		return $this->_workflow->toxml();
 	}
