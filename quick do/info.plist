@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.jx.quickdo.workflow</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>0344D585-13FD-4F0A-9E31-B5B7D8AACE28</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F6C9BD61-A74D-4E9E-A65F-27E5AA0FA868</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>2D57FCEE-E104-46B7-80DF-CAE2573EA155</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B27F79F0-0097-4989-8F8B-0612762F3D93</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>2DE93192-0397-4256-8E34-1C1FD9C986F1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>FA75EB0E-DDF3-47F2-8A13-DD5F186779AD</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>7C18B023-878A-487B-90B0-2525EE203BF8</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F6C9BD61-A74D-4E9E-A65F-27E5AA0FA868</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>7DFCF90F-545B-4395-8108-D78BF796C8F4</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>FA75EB0E-DDF3-47F2-8A13-DD5F186779AD</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>RK</string>
+	<key>description</key>
+	<string>Quick Do with Your Source File or Script File with CMD+R and Edit with CMD+E</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Quick Do</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>15</integer>
+				<key>hotmod</key>
+				<integer>1048576</integer>
+				<key>hotstring</key>
+				<string>R</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedApps</key>
+				<array>
+					<string>com.apple.finder</string>
+				</array>
+				<key>relatedAppsMode</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>2D57FCEE-E104-46B7-80DF-CAE2573EA155</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>applescript</key>
+				<string>on searchReplace(origStr, searchStr, replaceStr)	-- remove the extension	set old_delim to AppleScript's text item delimiters	set AppleScript's text item delimiters to searchStr	set origStr to text items of origStr	set AppleScript's text item delimiters to replaceStr	set origStr to origStr as string	set AppleScript's text item delimiters to old_delim	return origStrend searchReplaceon alfred_script()	set selected to false -- if file selected		tell application "Finder"		set myPath to POSIX path of (target of window 1 as alias)		if (selection ≠ {}) then			set selected to true			set myFile to (selection as alias)			display dialog class of myFile			set myFiletype to name extension of myFile			set myFilename to name of myFile		end if	end tell	-- get raw name without extension	if selected then set myFileRawName to searchReplace(myFilename, "." &amp; myFiletype, "")		tell application "iTerm"		set _term to (make new terminal)		tell _term			launch session "Default"			set _session to current session		end tell				tell _session			write text "cd " &amp; myPath			write text "clear"			if selected then				-- Add your process here...				-- Makefile				if myFilename = "Makefile" or ¬					myFilename = "makefile" then write text "make"				-- Python				if myFiletype = "py" then write text "python " &amp; myFilename				-- C and C++				if myFiletype = "c" or ¬					myFilename = "cpp" then					write text "clang " &amp; myFilename &amp; " -o " &amp; myFileRawName					write text "./" &amp; myFileRawName				end if				-- Java				if myFiletype = "java" then					write text "javac " &amp; myFilename					write text "java " &amp; myFileRawName				end if				-- PHP				-- Perl				-- Ruby				-- LaTeX				if myFiletype = "tex" or myFiletype = "ltx" then ¬					write text "xelatex -shell-escape -8bit" &amp; myFileRawName			end if		end tell	end tellend alfred_scriptalfred_script()</string>
+				<key>cachescript</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>B27F79F0-0097-4989-8F8B-0612762F3D93</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>3</integer>
+				<key>argumenttext</key>
+				<string>false</string>
+				<key>hotkey</key>
+				<integer>14</integer>
+				<key>hotmod</key>
+				<integer>1048576</integer>
+				<key>hotstring</key>
+				<string>E</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedApps</key>
+				<array>
+					<string>com.apple.finder</string>
+				</array>
+				<key>relatedAppsMode</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>7C18B023-878A-487B-90B0-2525EE203BF8</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>applescript</key>
+				<string>on appSelect(FileType)	-- add your file type here	set editTypes to {"c", "cpp", "py", "php", "txt", "tex", "ltx", "java", "rb", "m", "html", "css"}	if FileType is in editTypes then return "SelectYourTextTool"	return "Finder"end appSelecton alfred_script(q)	set vim to q as boolean -- use vim to open	set appName to missing value	set selected to false	tell application "Finder"		if (selection ≠ {}) then			set selected to true			set myFile to (selection as alias)			set myFiletype to name extension of myFile			set myFilePath to POSIX path of myFile		end if	end tell	if selected then		if vim then			tell application "iTerm"				set _term to (make new terminal)				tell _term					launch session "Default"					set _session to current session				end tell				tell _session					write text "vim " &amp; myFilePath				end tell			end tell		else			set appName to appSelect(myFiletype)			tell application appName				activate				open myFile			end tell		end if	end ifend alfred_script</string>
+				<key>cachescript</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>F6C9BD61-A74D-4E9E-A65F-27E5AA0FA868</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>3</integer>
+				<key>argumenttext</key>
+				<string>true</string>
+				<key>hotkey</key>
+				<integer>14</integer>
+				<key>hotmod</key>
+				<integer>1572864</integer>
+				<key>hotstring</key>
+				<string>E</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedApps</key>
+				<array>
+					<string>com.apple.finder</string>
+				</array>
+				<key>relatedAppsMode</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>0344D585-13FD-4F0A-9E31-B5B7D8AACE28</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>45</integer>
+				<key>hotmod</key>
+				<integer>524288</integer>
+				<key>hotstring</key>
+				<string>N</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedApps</key>
+				<array>
+					<string>com.apple.finder</string>
+				</array>
+				<key>relatedAppsMode</key>
+				<integer>1</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>7DFCF90F-545B-4395-8108-D78BF796C8F4</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>applescript</key>
+				<string>global myTextToolset myTextTool to "TextMate" -- select your text editor at hereon alfred_script(q)	if q = "" then		set filename to text returned of (display dialog "请输入文件名:" default answer "untitled.txt" with title "New File .." with icon 1)	else		set filename to q	end if	tell application "Finder"		if (count of windows) is equal to 0 then			set myPath to path to documents folder as text -- 如果没有Finder窗口则保存在Documents		else			set myPath to (target of window 1 as alias) as text		end if				try			make new file at myPath with properties {name:filename}			set myFile to alias (myPath &amp; filename)			set myFiletype to name extension of myFile			set fp to open for access file (myFile as text) with write permission			if myFiletype = "c" then write "#include &lt;stdio.h&gt;
+int main(int argc, char* argv[]) {
+	
+	return 0;
+}" to fp			if myFiletype = "cpp" then write "#include &lt;iostream&gt;
+using namespace std;
+int main(int argc, char* argv[]) {
+	
+	return 0;
+}" to fp			if myFiletype = "py" then write "#!/usr/bin/python
+#coding: utf-8
+" to fp			if myFiletype = "java" then write "public class HelloWorld{
+	public static void main(String args[]){
+		
+	}
+}" to fp			if myFiletype = "php" then write "&lt;?php
+	
+?&gt;" to fp			close access fp		on error eText number eNum			if (eNum = -48) then				set myFile to alias (myPath &amp; filename)			end if		end try	end tell		tell application myTextTool		activate		open myFile	end tellend alfred_script</string>
+				<key>cachescript</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>FA75EB0E-DDF3-47F2-8A13-DD5F186779AD</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>new</string>
+				<key>runningsubtext</key>
+				<string>Make new file "{query}" at this folder</string>
+				<key>script</key>
+				<string>#!/usr/bin/python
+#coding: utf-8
+
+import newfile
+query = u'{query}'
+newfile.showFileList(query)</string>
+				<key>subtext</key>
+				<string>Make new file at this folder</string>
+				<key>title</key>
+				<string>New File ..</string>
+				<key>type</key>
+				<integer>3</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>2DE93192-0397-4256-8E34-1C1FD9C986F1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>0344D585-13FD-4F0A-9E31-B5B7D8AACE28</key>
+		<dict>
+			<key>ypos</key>
+			<real>280</real>
+		</dict>
+		<key>2D57FCEE-E104-46B7-80DF-CAE2573EA155</key>
+		<dict>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>2DE93192-0397-4256-8E34-1C1FD9C986F1</key>
+		<dict>
+			<key>ypos</key>
+			<real>560</real>
+		</dict>
+		<key>7C18B023-878A-487B-90B0-2525EE203BF8</key>
+		<dict>
+			<key>ypos</key>
+			<real>180</real>
+		</dict>
+		<key>7DFCF90F-545B-4395-8108-D78BF796C8F4</key>
+		<dict>
+			<key>ypos</key>
+			<real>410</real>
+		</dict>
+		<key>B27F79F0-0097-4989-8F8B-0612762F3D93</key>
+		<dict>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>F6C9BD61-A74D-4E9E-A65F-27E5AA0FA868</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
+		</dict>
+		<key>FA75EB0E-DDF3-47F2-8A13-DD5F186779AD</key>
+		<dict>
+			<key>ypos</key>
+			<real>480</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://fatestigma.github.io</string>
+</dict>
+</plist>
