@@ -25,6 +25,15 @@ And press 'Enter' key to confirm this show.
 
 ![image](https://github.com/fatestigma/AlfredWorkflows/raw/master/extra/notification.png)
 
+#Quick Do
+####使用方法:
+
+>* `⌘R` 快速在iTerm中到达当前路径，如果有源文件被选中可直接编译运行  
+* `⌘E` 在指定的编辑器中编辑当前源文件，与原生的`⌘O`并不相同  
+* `⌥⌘E` 在iTerm中使用Vim编辑当前源文件  
+* `⌥N` 在当前路径下新建一个命名文档，并在指定的编辑器中打开
+* `new [name]` 与`⌥N`功能相同
+
 
 [Alfred 2]: http://www.alfredapp.com/
 [Workflow Support]: http://support.alfredapp.com/workflows
