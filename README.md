@@ -7,6 +7,10 @@ For more workflows, check [AlfredWorkflow.com] and [Workflow Support]
 * * *
 
 ## TV Show Helper
+
+####下载地址：
+[v0.4版][1]
+
 Last updated at Jun 28th, 2014 (v0.3 beta)
 
 Make watching tv shows more easier.
@@ -26,6 +30,14 @@ And press 'Enter' key to confirm this show.
 ![image](https://github.com/fatestigma/AlfredWorkflows/raw/master/extra/notification.png)
 
 #Quick Do
+
+####下载地址：
+[v0.1Dev版][2]
+
+Last updated at Jul 10th, 2014(v0.1 dev)
+
+Make native Finder.app more efficient.
+
 ####使用方法:
 
 >* `⌘R` 快速在iTerm中到达当前路径，如果有源文件被选中可直接编译运行  
@@ -38,4 +50,5 @@ And press 'Enter' key to confirm this show.
 [Alfred 2]: http://www.alfredapp.com/
 [Workflow Support]: http://support.alfredapp.com/workflows
 [AlfredWorkflow.com]: http://www.alfredworkflow.com
-
+[1]:https://raw.githubusercontent.com/fatestigma/AlfredWorkflows/master/Downloads/TV%20Show%20helper%20v0.4%20beta.alfredworkflow
+[2]:https://raw.githubusercontent.com/fatestigma/AlfredWorkflows/master/Downloads/Quick%20Do%20v0.1%20dev.alfredworkflow
