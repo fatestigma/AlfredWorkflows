@@ -58,7 +58,6 @@ _May 1st, 2014_
 	use brand new icon instead of Google TV logo  
 	使用全新的图标，而不再是Google TV的图标了
 	
-	
 ##Contact Me
 E-mail: fate_stigma@hotmail.com  
 Website: fatestigma.github.io

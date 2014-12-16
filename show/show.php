@@ -15,28 +15,34 @@ class WatchShow {
 	private $_workflow = null;
 	private $_data = null;
 	private $_path = null;
+	private $_sync = null;
 	
-	public static function factory($q) {
-		return new WatchShow($q);
+	public static function factory($q, $syncPath) {
+		return new WatchShow($q, $syncPath);
 	}
 	
-	public function __construct($q) {
+	public function __construct($q, $syncPath) {
 		$this->_workflow = new \Workflows();
 		$this->_query = $q;
 		$this->_path = $this->_workflow->data() . '/tvlist.plist';
-		if (!file_exists($this->_path)) {
-			if (file_exists(__DIR__.'/tvlist.plist')){
+		if ($syncPath != null) {
+			// 同步
+			$this->_sync = $syncPath . '/tvlist.plist';
+			if (file_exists($this->_sync)) {
+				// Update
 				$plist = new CFPropertyList(__DIR__.'/tvlist.plist');
-				unlink(__DIR__.'/tvlist.plist');
+				$plist->saveBinary($this->_path);
 			}
-			else {
-				$plist = new CFPropertyList();
-				$plist->add( $dict = new CFDictionary() );
-				$plist->add( $dict2 = new CFDictionary() );
-				$dict2->add( 'blank', new CFNumber(0) );
-			}
+		}
+
+		if (!file_exists($this->_path)) {
+			$plist = new CFPropertyList();
+			$plist->add( $dict = new CFDictionary() );
+			$plist->add( $dict2 = new CFDictionary() );
+			$dict2->add( 'blank', new CFNumber(0) );
 			$plist->saveBinary($this->_path);
 		}
+		
 		$this->_data = new CFPropertyList($this->_path);
 	}
 
@@ -65,6 +71,8 @@ class WatchShow {
 			$dict->add($key, new CFNumber($ep));
 		}
 		$this->_data->save($this->_path, CFPropertyList::FORMAT_BINARY );
+		if ($this->_sync!=null)
+			 $this->_data->save($this->_sync, CFPropertyList::FORMAT_BINARY );
 		$str = $key . ' Episode ' . $ep . ' is watched!';
 		return $str;
 	}
@@ -79,6 +87,8 @@ class WatchShow {
 			$dict->del($key);
 			$str = 'This season of ' . $this->_query . ' is finished.';
 			$this->_data->save($this->_path, CFPropertyList::FORMAT_BINARY );
+			if ($this->_sync!=null)
+				 $this->_data->save($this->_sync, CFPropertyList::FORMAT_BINARY );
 		} else {
 			$str = $this->_query . ' is not in your plist or already deleted!';
 		}
@@ -97,6 +107,8 @@ class WatchShow {
 				$dict->add($key, new CFNumber($ep));
 			}
 			$this->_data->save($this->_path, CFPropertyList::FORMAT_BINARY );
+			if ($this->_sync!=null)
+				 $this->_data->save($this->_sync, CFPropertyList::FORMAT_BINARY );
 			return 'Undo ' . $key . ' with epidode ' . $ep . ' successfully!';
 		}
 	}

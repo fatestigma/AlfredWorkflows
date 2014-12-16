@@ -8,6 +8,17 @@
 	<string>Tools</string>
 	<key>connections</key>
 	<dict>
+		<key>68D949C5-740B-4AB7-817A-D153851B69A3</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
 		<array>
 			<dict>
@@ -24,6 +35,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>894A2480-6233-49F4-BB51-5E1DB4C24C9D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>DF9149EA-3C70-4A55-8AD2-2B6FC7B2A931</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -78,11 +100,11 @@
 	<key>createdby</key>
 	<string>JinXi</string>
 	<key>description</key>
-	<string>Quick to see how where have you gone.</string>
+	<string>Record where have you gone with series.| 0.5</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>TV Show helper</string>
+	<string>TV series helper</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -96,8 +118,6 @@
 				<integer>0</integer>
 				<key>hotmod</key>
 				<integer>0</integer>
-				<key>hotstring</key>
-				<string></string>
 				<key>leftcursor</key>
 				<false/>
 				<key>modsmode</key>
@@ -124,19 +144,14 @@
 				<key>runningsubtext</key>
 				<string>Please waiting...</string>
 				<key>script</key>
-				<string>require_once('show.php');
-
-$tvshow = \CFPropertyList\WatchShow::factory("{query}");
-if ("{query}"=="all")
-	echo $tvshow-&gt;listInAlfred(true);
-else
-	echo $tvshow-&gt;listInAlfred();</string>
+				<string>php exec.php watch "{query}" "nosync"
+# replace nosync to sync with Dropbox or any other tools.</string>
 				<key>subtext</key>
 				<string>check how many Episodes of '{query}' I have seen</string>
 				<key>title</key>
 				<string>TV show</string>
 				<key>type</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -153,20 +168,28 @@ else
 				<key>escaping</key>
 				<integer>124</integer>
 				<key>script</key>
-				<string>require_once('show.php');
-
-$tvshow = \CFPropertyList\WatchShow::factory("{query}");
-if ("{query}"=="undo")
-	echo $tvshow-&gt;undo();
-else
-	echo $tvshow-&gt;watched();</string>
+				<string>php exec.php watched "{query}" "nosync"
+# replace nosync to sync with Dropbox or any other tools.</string>
 				<key>type</key>
-				<integer>1</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>988E6332-E204-4351-9E7A-E6C72287146D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>triggerid</key>
+				<string>watch_episode</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.external</string>
+			<key>uid</key>
+			<string>68D949C5-740B-4AB7-817A-D153851B69A3</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -198,16 +221,45 @@ else
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>applescript</key>
+				<string>on alfred_script(q)
+  tell application "Alfred 2" to run trigger "watch_episode" in workflow "com.jx.shows.alfred" with argument q
+end alfred_script</string>
+				<key>cachescript</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>DF9149EA-3C70-4A55-8AD2-2B6FC7B2A931</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>subtext</key>
+				<string>Enter to see the list</string>
+				<key>text</key>
+				<string>Watched this episode of "{query}"</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.fallback</string>
+			<key>uid</key>
+			<string>894A2480-6233-49F4-BB51-5E1DB4C24C9D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>require_once('show.php');
-
-$tvshow = \CFPropertyList\WatchShow::factory("{query}");
-$ep = $tvshow-&gt;finished();
-echo $ep;</string>
+				<string>php exec.php finished "{query}" "nosync"
+# replace nosync to sync with Dropbox or any other tools.</string>
 				<key>type</key>
-				<integer>1</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -228,14 +280,12 @@ echo $ep;</string>
 				<key>runningsubtext</key>
 				<string>Please waiting...</string>
 				<key>script</key>
-				<string>require_once('show.php');
-
-$tvshow = \CFPropertyList\WatchShow::factory("{query}");
-echo $tvshow-&gt;listInAlfred();</string>
+				<string>php exec.php finish "{query}" "nosync"
+# replace nosync to sync with Dropbox or any other tools.</string>
 				<key>title</key>
 				<string>TV show</string>
 				<key>type</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -257,8 +307,6 @@ echo $tvshow-&gt;listInAlfred();</string>
 				<integer>0</integer>
 				<key>hotmod</key>
 				<integer>0</integer>
-				<key>hotstring</key>
-				<string></string>
 				<key>leftcursor</key>
 				<false/>
 				<key>modsmode</key>
@@ -276,7 +324,7 @@ echo $tvshow-&gt;listInAlfred();</string>
 	</array>
 	<key>readme</key>
 	<string>#TV Show Helper
-Alfred Workflow to help you to remember which episde have you watched!  
+Alfred Workflow to help you to remember which episode have you watched!  
 一个帮助你记住你的电视剧们都看到哪里了的Alfred Workflow
 
 __Version: beta 0.4__
@@ -343,37 +391,52 @@ Website: fatestigma.github.io</string>
 		<key>1440AD24-5B17-4362-A23D-241D524BB025</key>
 		<dict>
 			<key>ypos</key>
-			<real>170</real>
+			<real>130</real>
+		</dict>
+		<key>68D949C5-740B-4AB7-817A-D153851B69A3</key>
+		<dict>
+			<key>ypos</key>
+			<real>130</real>
 		</dict>
 		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
 		<dict>
 			<key>ypos</key>
-			<real>100</real>
+			<real>30</real>
 		</dict>
 		<key>7DEF9F97-6709-41B2-BEF5-4527B261E284</key>
 		<dict>
 			<key>ypos</key>
-			<real>100</real>
+			<real>30</real>
+		</dict>
+		<key>894A2480-6233-49F4-BB51-5E1DB4C24C9D</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
 		</dict>
 		<key>8D562804-FB9B-4643-94B7-8848A9BD670A</key>
 		<dict>
 			<key>ypos</key>
-			<real>220</real>
+			<real>330</real>
 		</dict>
 		<key>988E6332-E204-4351-9E7A-E6C72287146D</key>
 		<dict>
 			<key>ypos</key>
-			<real>100</real>
+			<real>30</real>
 		</dict>
 		<key>A01EBC44-0469-4181-B435-66D11559F030</key>
 		<dict>
 			<key>ypos</key>
-			<real>220</real>
+			<real>330</real>
 		</dict>
 		<key>A5A6F476-61A0-45A5-BCCE-4DCEDA8A5B02</key>
 		<dict>
 			<key>ypos</key>
-			<real>220</real>
+			<real>330</real>
+		</dict>
+		<key>DF9149EA-3C70-4A55-8AD2-2B6FC7B2A931</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
