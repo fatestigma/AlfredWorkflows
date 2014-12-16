@@ -30,7 +30,7 @@ class WatchShow {
 			$this->_sync = $syncPath . '/tvlist.plist';
 			if (file_exists($this->_sync)) {
 				// Update
-				$plist = new CFPropertyList(__DIR__.'/tvlist.plist');
+				$plist = new CFPropertyList($this->_sync);
 				$plist->saveBinary($this->_path);
 			}
 		}
