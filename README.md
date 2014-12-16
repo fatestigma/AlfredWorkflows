@@ -50,5 +50,5 @@ Make native Finder.app more efficient.
 [Alfred 2]: http://www.alfredapp.com/
 [Workflow Support]: http://support.alfredapp.com/workflows
 [AlfredWorkflow.com]: http://www.alfredworkflow.com
-[1]:https://raw.githubusercontent.com/fatestigma/AlfredWorkflows/master/Downloads/TV%20Show%20helper%20v0.4%20beta.alfredworkflow
+[1]:https://github.com/fatestigma/AlfredWorkflows/releases/download/0.5-beta/TV.Show.helper.v0.5.beta.alfredworkflow
 [2]:https://raw.githubusercontent.com/fatestigma/AlfredWorkflows/master/Downloads/Quick%20Do%20v0.1%20dev.alfredworkflow
